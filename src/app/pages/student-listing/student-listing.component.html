@@ -1,0 +1,15 @@
+<div class="student-listing-section mat-elevation-z2">
+  <div class="header-container">
+    <h2 class="listing-title">Student Management System</h2>
+    <app-common-button
+    [matIcon]="APPCONSTANTS.MATERIAL.ICON.PERSONADD"
+    [backgroundColor]="APPCONSTANTS.COLORS.GREEN"
+    [textColor]="APPCONSTANTS.COLORS.BLACK"
+    (buttonClick)="onAddStudent()">
+    </app-common-button>
+  </div>
+
+  <app-common-material-table [displayedColumns]="studentListingDisplayedColumns" [actions]="studentListingActions"
+    [dataSource]="studentListingDataSource" (tableOutputEmitter)="studentListingTableOutputEvent($event)">
+  </app-common-material-table>
+</div>

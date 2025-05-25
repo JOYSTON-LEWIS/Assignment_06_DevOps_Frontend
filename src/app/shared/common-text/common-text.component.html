@@ -1,0 +1,24 @@
+<mat-form-field
+  appearance="fill"
+  class="custom-input"
+>
+  <mat-label>{{ label }}</mat-label>
+
+  <ng-container [ngSwitch]="type">
+    <input *ngSwitchCase="'text'"
+           matInput
+           [placeholder]="placeholder"
+           [disabled]="disabled"
+           [(ngModel)]="textInputted"
+           (input)="onInputChange($event)" />
+
+    <textarea *ngSwitchCase="'textarea'"
+              matInput
+              [placeholder]="placeholder"
+              [rows]="rows"
+              [disabled]="disabled"
+              [(ngModel)]="textInputted"
+              (input)="onInputChange($event)">
+    </textarea>
+  </ng-container>
+</mat-form-field>

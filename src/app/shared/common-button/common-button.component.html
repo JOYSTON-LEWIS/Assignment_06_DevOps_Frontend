@@ -1,0 +1,9 @@
+<button
+  [ngClass]="buttonStyle"
+  [type]="type"
+  [disabled]="disabled"
+  [ngStyle]="{ 'background-color': backgroundColor, 'color': textColor }"
+  (click)="handleClick()">
+    <mat-icon *ngIf="matIcon">{{ matIcon }}</mat-icon>
+    <div class="label" *ngIf="label">{{ label }}</div>
+</button>

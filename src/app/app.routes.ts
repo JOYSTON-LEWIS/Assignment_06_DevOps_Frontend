@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { StudentListingComponent } from './student-listing/student-listing.component';
+import { StudentListingComponent } from './pages/student-listing/student-listing.component';
 
 export const routes: Routes = [
   {

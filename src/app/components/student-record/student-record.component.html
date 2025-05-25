@@ -1,0 +1,13 @@
+<app-common-text
+[label]="studentNameLabel"
+[textInputted]="studentNameTextInputted"
+[disabled]="isStudentNameTextDisabled"
+(textInputtedChange)="onNameChange($event)">
+</app-common-text>
+
+<app-common-text
+[label]="studentAgeLabel"
+[textInputted]="studentAgeTextInputted"
+[disabled]="isStudentAgeTextDisabled"
+(textInputtedChange)="onAgeChange($event)">
+</app-common-text>

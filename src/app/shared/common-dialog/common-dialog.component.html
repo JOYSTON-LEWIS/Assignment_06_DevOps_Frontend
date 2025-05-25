@@ -1,0 +1,36 @@
+<div *ngIf="data.showTitle" class="dialog-header">
+  <div>{{ data.title }}</div>
+</div>
+
+<div *ngIf="data.showBody" class="dialog-content">
+  <div *ngIf="data.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT">{{ data.body }}</div>
+  <div *ngIf="data.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.ADDSTUDENT || 
+      data.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT || 
+      data.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENT">
+    <app-student-record
+    [studentNameLabel]="data.ngModel?.studentNameLabel"
+    [studentNameTextInputted]="data.ngModel?.studentNameTextInputted"
+    [isStudentNameTextDisabled]="data.ngModel?.isStudentNameDisabled"
+    [studentAgeLabel]="data.ngModel?.studentAgeLabel"
+    [studentAgeTextInputted]="data.ngModel?.studentAgeTextInputted"
+    [isStudentAgeTextDisabled]="data.ngModel?.isStudentAgeDisabled"
+    (studentNameTextInputtedChange)="data.ngModel.studentNameTextInputted = $event"
+    (studentAgeTextInputtedChange)="data.ngModel.studentAgeTextInputted = $event">
+    </app-student-record>
+  </div>
+</div>
+
+<div *ngIf="data.showFooter" class="dialog-footer">
+  <ng-container *ngFor="let button of data.footerButtonArray">
+    <app-common-button
+    [label]="button.label"
+    [matIcon]="button.matIcon"
+    [buttonStyle]="button.buttonStyle"
+    [backgroundColor]="button.backgroundColor"
+    [textColor]="button.textColor"
+    [type]="button.type"
+    [disabled]="button.disabled"
+    (buttonClick)="onDialogButtonClick(button)">
+    </app-common-button>
+  </ng-container>
+</div>

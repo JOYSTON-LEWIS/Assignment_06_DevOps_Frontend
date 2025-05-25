@@ -1,0 +1,52 @@
+.student-listing-section {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  max-width: 90vw;
+  border-radius: 12px;
+  background: #42a5f5;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+
+    .listing-title {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    button {
+      margin-top: 0;
+    }
+  }
+
+  // Mobile view styles (less than 768px)
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.8rem;
+
+      .listing-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      button {
+        align-self: stretch;
+        width: 100%;
+      }
+    }
+  }
+
+  // Desktop view styles (768px and up)
+  @media (min-width: 769px) {
+    .header-container {
+      flex-direction: row;
+    }
+  }
+}
