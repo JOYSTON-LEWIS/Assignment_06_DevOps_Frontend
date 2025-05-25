@@ -8,8 +8,8 @@ import { APPCONSTANTS } from '../../constants/app-constants';
   selector: 'app-common-button',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatButtonModule,
     MatIconModule
   ],
   templateUrl: './common-button.component.html',

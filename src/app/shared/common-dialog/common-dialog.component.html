@@ -14,8 +14,12 @@
     [studentAgeLabel]="data.ngModel?.studentAgeLabel"
     [studentAgeTextInputted]="data.ngModel?.studentAgeTextInputted"
     [isStudentAgeTextDisabled]="data.ngModel?.isStudentAgeDisabled"
+    [studentAssignedQuestionsLabel]="data.ngModel?.studentAssignedQuestionsLabel"
+    [studentAssignedQuestionsTextInputted]="data.ngModel?.studentAssignedQuestionsTextInputted"
+    [isStudentAssignedQuestionsTextDisabled]="data.ngModel?.isStudentAssignedQuestionsDisabled"
     (studentNameTextInputtedChange)="data.ngModel.studentNameTextInputted = $event"
-    (studentAgeTextInputtedChange)="data.ngModel.studentAgeTextInputted = $event">
+    (studentAgeTextInputtedChange)="data.ngModel.studentAgeTextInputted = $event"
+    (studentAssignedQuestionsTextInputtedChange)="data.ngModel.studentAssignedQuestionsTextInputted = $event">
     </app-student-record>
   </div>
 </div>

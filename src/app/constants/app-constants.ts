@@ -21,6 +21,7 @@ export const APPCONSTANTS = {
             DELETE: 'Delete',
             CLOSE: 'Close',
             SUCCESS: 'Success',
+            INFO: 'Info',
             ERROR: 'Error'
         },
         UPPERCASE: {
@@ -40,17 +41,19 @@ export const APPCONSTANTS = {
             DELETESTUDENT: 'DeleteStudent',
             STUDENTNAME: 'studentName',
             STUDENTAGE: 'studentAge',
+            STUDENTASSIGNEDQUESTIONS: 'studentAssignedQuestions',
             ADDSTUDENTDIALOGTITLE: 'Add Student',
             EDITSTUDENTDIALOGTITLE: 'Edit Student',
             VIEWSTUDENTDIALOGTITLE: 'View Student',
             DELETESTUDENTDIALOGTITLE: 'Delete Student',
             DELETESTUDENTDIALOGBODY: 'Are you sure you want to delete this record?',
-            STUDENTNAMELABEL: 'Student Name:',
-            STUDENTAGELABEL: 'Student Age:', 
+            STUDENTNAMELABEL: 'Name:',
+            STUDENTAGELABEL: 'Age:',
+            STUDENTASSIGNEDQUESTIONSLABEL: 'Assigned Questions:',
         }
     },
-    MATERIAL:{
-        BUTTON:{
+    MATERIAL: {
+        BUTTON: {
             STYLE: [
                 'mat-raised-button',
                 'mat-flat-button',
@@ -66,10 +69,10 @@ export const APPCONSTANTS = {
         TEXT: {
             TYPE: {
                 TEXT: 'text',
-                TEXTAREA: 'textarea' 
+                TEXTAREA: 'textarea'
             }
         },
-        ICON:{
+        ICON: {
             PERSONADD: 'person_add',
             MOREVERT: 'more_vert',
         }
@@ -77,14 +80,16 @@ export const APPCONSTANTS = {
     TOASTER: {
         TYPE: {
             SUCCESS: 'success',
-            ERROR: 'error'
+            ERROR: 'error',
+            INFO: 'info'
         },
         MESSAGES: {
             SOMETHINGWENTWRONG: 'Something Went Wrong',
             RECORDADDEDSUCCESSFULLY: 'Record Added Succesfully',
             RECORDEDITEDSUCCESSFULLY: 'Record Updated Succesfully',
             RECORDDELETEDSUCCESSFULLY: 'Record Deleted Succesfully',
-            RECORDSFETCHEDSUCCESSFULLY: 'Record/s Fetched Successfully'
+            RECORDSFETCHEDSUCCESSFULLY: 'Record/s Fetched Successfully',
+            NORECORDSFOUND: 'No Records Found'
         }
     },
     COLORS: {
@@ -94,7 +99,7 @@ export const APPCONSTANTS = {
         GREEN: '#00FF00',
         RED: '#FF0000',
         CYAN: '#00FFFF',
-        
+
 
     }
 }

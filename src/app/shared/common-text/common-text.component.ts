@@ -9,9 +9,9 @@ import { APPCONSTANTS } from '../../constants/app-constants';
   selector: 'app-common-text',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    MatFormFieldModule, 
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
     MatInputModule
   ],
   templateUrl: './common-text.component.html',

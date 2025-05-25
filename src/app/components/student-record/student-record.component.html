@@ -5,9 +5,18 @@
 (textInputtedChange)="onNameChange($event)">
 </app-common-text>
 
+<!-- 
 <app-common-text
 [label]="studentAgeLabel"
 [textInputted]="studentAgeTextInputted"
 [disabled]="isStudentAgeTextDisabled"
 (textInputtedChange)="onAgeChange($event)">
+</app-common-text>
+-->
+
+<app-common-text
+[label]="studentAssignedQuestionsLabel"
+[textInputted]="studentAssignedQuestionsTextInputted"
+[disabled]="isStudentAssignedQuestionsTextDisabled"
+(textInputtedChange)="onAssignedQuestionsChange($event)">
 </app-common-text>

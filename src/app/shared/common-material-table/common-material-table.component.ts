@@ -67,6 +67,8 @@ export class CommonMaterialTableComponent {
         return 'Name';
       case 'studentAge':
         return 'Age';
+      case 'studentAssignedQuestions':
+        return 'Assigned Questions';
       case 'actions':
         return 'Actions';
       default:

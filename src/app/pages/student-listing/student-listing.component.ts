@@ -31,7 +31,7 @@ export class StudentListingComponent implements OnInit {
   studentListingDataSource: any[] = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
   studentListingSelectedAction: string = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
   studentListingRowData: any;
-  studentDialogWidth: string = '400px';
+  studentDialogWidth: string = '30vw';
   studentDialogData: CommonDialogDataModel = {
     showTitle: APPCONSTANTS.CONSTANTS.TRUE,
     showBody: APPCONSTANTS.CONSTANTS.TRUE,
@@ -47,6 +47,9 @@ export class StudentListingComponent implements OnInit {
       studentAgeLabel: APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTAGELABEL,
       studentAgeTextInputted: APPCONSTANTS.CONSTANTS.EMPTYSTRING,
       isStudentAgeDisabled: APPCONSTANTS.CONSTANTS.FALSE,
+      studentAssignedQuestionsLabel: APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTASSIGNEDQUESTIONSLABEL,
+      studentAssignedQuestionsTextInputted: APPCONSTANTS.CONSTANTS.EMPTYSTRING,
+      isStudentAssignedQuestionsDisabled: APPCONSTANTS.CONSTANTS.FALSE,
     }
   }
   constructor(
@@ -59,35 +62,49 @@ export class StudentListingComponent implements OnInit {
     this.onInitialLoad();
   }
 
-  onInitialLoad(){
+  onInitialLoad() {
     this.getAllStudentData();
   }
 
-  getAllStudentData(){
+  getAllStudentData() {
     this.studentListingDataSource = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
-    this.endpointsService.getStudents().subscribe(data => {
-      this.getStudentsResponse = data;
-      if(isNotNullOrUndefined(this.getStudentsResponse,APPCONSTANTS.FUNCTIONS.ARRAY))
-      {
-        let finalStudentsArray: any[] = [];
-        this.studentListingDisplayedColumns = [APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTNAME, APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTAGE, APPCONSTANTS.FUNCTIONS.TABLEACTIONS];
-        this.studentListingActions = [APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT, APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENT, APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT];
-        this.getStudentsResponse.forEach((studentObject: any)=>{
-          let finalObject = {
-            studentDatabaseID: studentObject._id,
-            studentName: studentObject.name,
-            studentAge: studentObject.age
-          }
-          finalStudentsArray.push(finalObject);
-        })
-        this.studentListingDataSource = finalStudentsArray;
-        this.showToaster(APPCONSTANTS.TOASTER.TYPE.SUCCESS, APPCONSTANTS.TOASTER.MESSAGES.RECORDSFETCHEDSUCCESSFULLY, APPCONSTANTS.CONSTANTS.PASCALCASE.SUCCESS);
-      }
-      else
-      {
-        this.studentListingDisplayedColumns = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
-        this.studentListingActions = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
-        this.studentListingDataSource = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
+    this.endpointsService.getStudents().subscribe({
+      next: data => {
+        this.getStudentsResponse = data;
+        if (isNotNullOrUndefined(this.getStudentsResponse, APPCONSTANTS.FUNCTIONS.ARRAY)) {
+          let finalStudentsArray: any[] = [];
+          this.studentListingDisplayedColumns = [
+            APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTNAME,
+            // APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTAGE,
+            APPCONSTANTS.COMPONENTS.STUDENTLISTING.STUDENTASSIGNEDQUESTIONS,
+            APPCONSTANTS.FUNCTIONS.TABLEACTIONS
+          ];
+          this.studentListingActions = [
+            APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT,
+            APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENT,
+            APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT
+          ];
+          this.getStudentsResponse.forEach((studentObject: any) => {
+            let finalObject = {
+              studentDatabaseID: studentObject._id,
+              studentName: studentObject.name,
+              studentAge: studentObject.age ? studentObject.age : APPCONSTANTS.CONSTANTS.ZERO,
+              studentAssignedQuestions: studentObject.assignedQuestions
+            }
+            finalStudentsArray.push(finalObject);
+          })
+          this.studentListingDataSource = finalStudentsArray;
+          this.showToaster(APPCONSTANTS.TOASTER.TYPE.SUCCESS, APPCONSTANTS.TOASTER.MESSAGES.RECORDSFETCHEDSUCCESSFULLY, APPCONSTANTS.CONSTANTS.PASCALCASE.SUCCESS);
+        }
+        else {
+          this.studentListingDisplayedColumns = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
+          this.studentListingActions = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
+          this.studentListingDataSource = APPCONSTANTS.CONSTANTS.EMPTYARRAY;
+          this.showToaster(APPCONSTANTS.TOASTER.TYPE.INFO, APPCONSTANTS.TOASTER.MESSAGES.NORECORDSFOUND, APPCONSTANTS.CONSTANTS.PASCALCASE.INFO);
+        }
+      },
+      error: (err) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.ERROR, APPCONSTANTS.TOASTER.MESSAGES.SOMETHINGWENTWRONG, APPCONSTANTS.CONSTANTS.PASCALCASE.ERROR);
       }
     });
   }
@@ -96,8 +113,7 @@ export class StudentListingComponent implements OnInit {
     this.studentListingRowData = event.rowData;
     this.studentListingSelectedAction = event.action;
     this.studentDialogData.condition = this.studentListingSelectedAction;
-    if(this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT)
-    {
+    if (this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT) {
       this.studentDialogData.title = APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENTDIALOGTITLE;
       this.studentDialogData.body = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
       this.studentDialogData.footerButtonArray = [
@@ -114,10 +130,10 @@ export class StudentListingComponent implements OnInit {
       ];
       this.studentDialogData.ngModel.studentNameTextInputted = this.studentListingRowData.studentName;
       this.studentDialogData.ngModel.studentAgeTextInputted = this.studentListingRowData.studentAge;
+      this.studentDialogData.ngModel.studentAssignedQuestionsTextInputted = this.studentListingRowData.studentAssignedQuestions;
       this.openCloseDialog();
     }
-    if(this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENT)
-    {
+    if (this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENT) {
       this.studentDialogData.title = APPCONSTANTS.COMPONENTS.STUDENTLISTING.VIEWSTUDENTDIALOGTITLE;
       this.studentDialogData.body = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
       this.studentDialogData.footerButtonArray = [
@@ -131,10 +147,11 @@ export class StudentListingComponent implements OnInit {
       this.studentDialogData.ngModel.isStudentNameDisabled = APPCONSTANTS.CONSTANTS.TRUE;
       this.studentDialogData.ngModel.studentAgeTextInputted = this.studentListingRowData.studentAge;
       this.studentDialogData.ngModel.isStudentAgeDisabled = APPCONSTANTS.CONSTANTS.TRUE;
+      this.studentDialogData.ngModel.studentAssignedQuestionsTextInputted = this.studentListingRowData.studentAssignedQuestions;
+      this.studentDialogData.ngModel.isStudentAssignedQuestionsDisabled = APPCONSTANTS.CONSTANTS.TRUE;
       this.openCloseDialog();
     }
-    if(this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT)
-    {
+    if (this.studentListingSelectedAction == APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT) {
       this.studentDialogData.title = APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENTDIALOGTITLE;
       this.studentDialogData.body = APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENTDIALOGBODY;
       this.studentDialogData.footerButtonArray = [
@@ -174,69 +191,88 @@ export class StudentListingComponent implements OnInit {
   }
 
   openCloseDialog(): void {
-  const data = this.studentDialogData;
-  const dialogRef = this.dialog.open(CommonDialogComponent, {
-    width: this.studentDialogWidth,
-    data
-  });
+    const data = this.studentDialogData;
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      width: this.studentDialogWidth,
+      data
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if(result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.ADDSTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.ADD)
-    {
-      this.onAddStudentApiCalled();
-    }
-    if(result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.UPDATE)
-    {
-      this.onEditStudentApiCalled();
-    }
-    if(result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.DELETE)
-    {
-      this.onDeleteStudentApiCalled();
-    }
-    this.studentDialogData.ngModel.studentNameTextInputted = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
-    this.studentDialogData.ngModel.studentAgeTextInputted = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
-    this.studentDialogData.ngModel.isStudentNameDisabled = APPCONSTANTS.CONSTANTS.FALSE;
-    this.studentDialogData.ngModel.isStudentAgeDisabled = APPCONSTANTS.CONSTANTS.FALSE;
-  });
-  }
-
-  onAddStudentApiCalled(){
-    let data = {
-      name: this.studentDialogData.ngModel?.studentNameTextInputted,
-      age: this.studentDialogData.ngModel?.studentAgeTextInputted
-    }
-    this.endpointsService.createStudent(data).subscribe(response => {
-      this.getAllStudentData();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.ADDSTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.ADD) {
+        this.onAddStudentApiCalled();
+      }
+      if (result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.EDITSTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.UPDATE) {
+        this.onEditStudentApiCalled();
+      }
+      if (result.condition == APPCONSTANTS.COMPONENTS.STUDENTLISTING.DELETESTUDENT && result.button.label == APPCONSTANTS.CONSTANTS.PASCALCASE.DELETE) {
+        this.onDeleteStudentApiCalled();
+      }
+      this.studentDialogData.ngModel.studentNameTextInputted = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
+      this.studentDialogData.ngModel.studentAgeTextInputted = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
+      this.studentDialogData.ngModel.studentAssignedQuestionsTextInputted = APPCONSTANTS.CONSTANTS.EMPTYSTRING;
+      this.studentDialogData.ngModel.isStudentNameDisabled = APPCONSTANTS.CONSTANTS.FALSE;
+      this.studentDialogData.ngModel.isStudentAgeDisabled = APPCONSTANTS.CONSTANTS.FALSE;
+      this.studentDialogData.ngModel.isStudentAssignedQuestionsDisabled = APPCONSTANTS.CONSTANTS.FALSE;
     });
   }
 
-  onEditStudentApiCalled(){
-    let id = this.studentListingRowData.studentDatabaseID;
+  onAddStudentApiCalled() {
     let data = {
       name: this.studentDialogData.ngModel?.studentNameTextInputted,
-      age: this.studentDialogData.ngModel?.studentAgeTextInputted
+      age: this.studentDialogData.ngModel?.studentAgeTextInputted,
+      assignedQuestions: this.studentDialogData.ngModel?.studentAssignedQuestionsTextInputted
     }
-    this.endpointsService.updateStudent(id, data).subscribe(response => {
-      this.getAllStudentData();
+    this.endpointsService.createStudent(data).subscribe({
+      next: (response: any) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.SUCCESS, APPCONSTANTS.TOASTER.MESSAGES.RECORDADDEDSUCCESSFULLY, APPCONSTANTS.CONSTANTS.PASCALCASE.SUCCESS);
+        this.getAllStudentData();
+      },
+      error: (err) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.ERROR, APPCONSTANTS.TOASTER.MESSAGES.SOMETHINGWENTWRONG, APPCONSTANTS.CONSTANTS.PASCALCASE.ERROR);
+      }
     });
   }
 
-
-  onDeleteStudentApiCalled(){
+  onEditStudentApiCalled() {
     let id = this.studentListingRowData.studentDatabaseID;
-    this.endpointsService.deleteStudent(id).subscribe(response => {
-      this.getAllStudentData();
+    let data = {
+      name: this.studentDialogData.ngModel?.studentNameTextInputted,
+      age: this.studentDialogData.ngModel?.studentAgeTextInputted,
+      assignedQuestions: this.studentDialogData.ngModel?.studentAssignedQuestionsTextInputted
+    }
+    this.endpointsService.updateStudent(id, data).subscribe({
+      next: (response: any) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.SUCCESS, APPCONSTANTS.TOASTER.MESSAGES.RECORDEDITEDSUCCESSFULLY, APPCONSTANTS.CONSTANTS.PASCALCASE.SUCCESS);
+        this.getAllStudentData();
+      },
+      error: (err) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.ERROR, APPCONSTANTS.TOASTER.MESSAGES.SOMETHINGWENTWRONG, APPCONSTANTS.CONSTANTS.PASCALCASE.ERROR);
+      }
+    });
+  }
+
+  onDeleteStudentApiCalled() {
+    let id = this.studentListingRowData.studentDatabaseID;
+    this.endpointsService.deleteStudent(id).subscribe({
+      next: (response: any) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.SUCCESS, APPCONSTANTS.TOASTER.MESSAGES.RECORDDELETEDSUCCESSFULLY, APPCONSTANTS.CONSTANTS.PASCALCASE.SUCCESS);
+        this.getAllStudentData();
+      },
+      error: (err) => {
+        this.showToaster(APPCONSTANTS.TOASTER.TYPE.ERROR, APPCONSTANTS.TOASTER.MESSAGES.SOMETHINGWENTWRONG, APPCONSTANTS.CONSTANTS.PASCALCASE.ERROR);
+      }
     });
   }
 
   showToaster(type: string, title: string, message: string) {
-    if(type == APPCONSTANTS.TOASTER.TYPE.SUCCESS)
-    {
+    if (type == APPCONSTANTS.TOASTER.TYPE.SUCCESS) {
       this.toastr.success(title, message);
     }
-    if(type == APPCONSTANTS.TOASTER.TYPE.ERROR)
-    {
+    if (type == APPCONSTANTS.TOASTER.TYPE.ERROR) {
       this.toastr.error(title, message);
+    }
+    if (type == APPCONSTANTS.TOASTER.TYPE.INFO) {
+      this.toastr.info(title, message);
     }
   }
 

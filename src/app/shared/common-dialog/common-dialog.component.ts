@@ -11,8 +11,8 @@ import { CommonButtonComponent } from '../common-button/common-button.component'
   selector: 'app-common-dialog',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatDialogModule, 
+    CommonModule,
+    MatDialogModule,
     MatButtonModule,
     StudentRecordComponent,
     CommonButtonComponent
@@ -26,13 +26,12 @@ export class CommonDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<CommonDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CommonDialogDataModel
-  ) {}
+  ) { }
 
-  onDialogButtonClick(buttonObj: any)
-  {
+  onDialogButtonClick(buttonObj: any) {
     this.dialogRef.close(
       {
-        condition: this.data.condition, 
+        condition: this.data.condition,
         button: buttonObj,
         data: this.data.ngModel
       }
